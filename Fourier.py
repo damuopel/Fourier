@@ -2,11 +2,11 @@ from svgpathtools import svg2paths, wsvg
 import numpy as np
 import matplotlib.pyplot as plt
 
-paths, attributes = svg2paths('Fourier.svg')
+paths, attributes = svg2paths('Batman.svg')
 
 Path = paths[0]
 
-n = 200
+n = 100
 auxN = np.arange(1,np.ceil(n/2.0)+1)
 N = np.append(0,np.array([auxN,-auxN]).T.flatten())
 
@@ -43,10 +43,11 @@ y -= y[0,0]
 xf -= xf[0]
 yf -= yf[0]
 
-for i in np.arange(0,t.size,1):
+for i in np.arange(0,t.size,5):
     plt.clf()
-    plt.xlim((-500,500))
-    plt.ylim((-700,500))
+    scale = 1
+    plt.xlim((np.round(scale*min(xf)),np.round(scale*max(xf))))
+    plt.ylim((np.round(scale*min(yf)),np.round(scale*max(yf))))
     plt.axis('off')
     plt.plot(xf[:i],yf[:i],'b')
     for j in range(1,N.size): 
