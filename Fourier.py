@@ -1,12 +1,16 @@
-from svgpathtools import svg2paths, wsvg
+from svgpathtools import svg2paths
 import numpy as np
 import matplotlib.pyplot as plt
+import gif
+import sys
+from os import path, getcwd
 
-paths, attributes = svg2paths('Batman.svg')
+originPath = path.join(getcwd(),'Examples',sys.argv[1])
+paths, attributes = svg2paths(originPath)
 
 Path = paths[0]
 
-n = 100
+n = 200
 auxN = np.arange(1,np.ceil(n/2.0)+1)
 N = np.append(0,np.array([auxN,-auxN]).T.flatten())
 
@@ -35,16 +39,15 @@ for i,iT in enumerate(t):
         
 xf = x[:,-1]      
 yf = y[:,-1]  
-           
-plt.ion()   
-
+              
 x -= x[0,0]
 y -= y[0,0]
 xf -= xf[0]
 yf -= yf[0]
 
-for i in np.arange(0,t.size,5):
-    plt.clf()
+@gif.frame
+def plot(i):
+    plt.figure()
     scale = 1
     plt.xlim((np.round(scale*min(xf)),np.round(scale*max(xf))))
     plt.ylim((np.round(scale*min(yf)),np.round(scale*max(yf))))
@@ -52,33 +55,11 @@ for i in np.arange(0,t.size,5):
     plt.plot(xf[:i],yf[:i],'b')
     for j in range(1,N.size): 
         plt.plot(x[i,j-1:j+1],y[i,j-1:j+1],'r')
-    plt.draw()
-    plt.pause(1e-6)
-plt.show(block = True)    
 
-        
-        
-        
-        
-        
-        
+frames = []
+for i in np.arange(0,t.size,1):
+    frame = plot(i)
+    frames.append(frame)
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+finalPath = path.join(getcwd(),'GIFs',sys.argv[2])
+gif.save(frames,finalPath,duration=50)
