@@ -40,11 +40,6 @@ for i,iT in enumerate(t):
 xf = x[:,-1]      
 yf = y[:,-1]  
               
-x -= x[0,0]
-y -= y[0,0]
-xf -= xf[0]
-yf -= yf[0]
-
 @gif.frame
 def plot(i):
     plt.figure()
